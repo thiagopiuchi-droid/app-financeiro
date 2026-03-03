@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>App Financeiro</title>
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#0f172a" />
+  <link rel="icon" href="/icon-192.png" />
+</head>
+<body style="font-family: Arial; text-align:center; padding:40px;">
+
+<h2>Controle Financeiro</h2>
+
+<div id="login-area">
+  <input type="email" id="email" placeholder="Email" /><br><br>
+  <input type="password" id="password" placeholder="Senha" /><br><br>
+  <button onclick="login()">Entrar</button>
+</div>
+
+<div id="app-area" style="display:none;">
+  <h3>Bem-vindo 👋</h3>
+  <p>Saldo: R$ <span id="saldo">0.00</span></p>
+  <input type="number" id="valor" placeholder="Valor" />
+  <button onclick="adicionar()">Adicionar</button>
+  <br><br>
+  <button onclick="logout()">Sair</button>
+</div>
+
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/service-worker.js");
+}
+
+function login() {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  if (email && password) {
+    localStorage.setItem("user", email);
+    mostrarApp();
+  } else {
+    alert("Preencha email e senha");
+  }
+}
+
+function mostrarApp() {
+  document.getElementById("login-area").style.display = "none";
+  document.getElementById("app-area").style.display = "block";
+  atualizarSaldo();
+}
+
+function logout() {
+  localStorage.removeItem("user");
+  location.reload();
+}
+
+function adicionar() {
+  const valor = parseFloat(document.getElementById("valor").value);
+  let saldo = parseFloat(localStorage.getItem("saldo") || 0);
+  saldo += valor;
+  localStorage.setItem("saldo", saldo);
+  atualizarSaldo();
+}
+
+function atualizarSaldo() {
+  document.getElementById("saldo").innerText = 
+    parseFloat(localStorage.getItem("saldo") || 0).toFixed(2);
+}
+
+if (localStorage.getItem("user")) {
+  mostrarApp();
+}
+</script>
+
+</body>
+</html>
