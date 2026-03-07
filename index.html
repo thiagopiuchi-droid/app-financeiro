@@ -1,78 +1,31 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>App Financeiro</title>
+
   <link rel="manifest" href="/manifest.json" />
-  <meta name="theme-color" content="#0f172a" />
-  <link rel="icon" href="/icon-192.png" />
+  <meta name="theme-color" content="#0d6efd"/>
+  <link rel="apple-touch-icon" href="/icons/icon-192.png"/>
+
+  <script type="module" src="/firebase.js"></script>
+  <script type="module" src="/app.js"></script>
 </head>
-<body style="font-family: Arial; text-align:center; padding:40px;">
+<body>
+  <h1>App Financeiro</h1>
 
-<h2>Controle Financeiro</h2>
+  <div id="auth">
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Senha" />
+    <button id="login">Entrar</button>
+    <button id="register">Cadastrar</button>
+  </div>
 
-<div id="login-area">
-  <input type="email" id="email" placeholder="Email" /><br><br>
-  <input type="password" id="password" placeholder="Senha" /><br><br>
-  <button onclick="login()">Entrar</button>
-</div>
-
-<div id="app-area" style="display:none;">
-  <h3>Bem-vindo 👋</h3>
-  <p>Saldo: R$ <span id="saldo">0.00</span></p>
-  <input type="number" id="valor" placeholder="Valor" />
-  <button onclick="adicionar()">Adicionar</button>
-  <br><br>
-  <button onclick="logout()">Sair</button>
-</div>
-
-<script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/service-worker.js");
-}
-
-function login() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  if (email && password) {
-    localStorage.setItem("user", email);
-    mostrarApp();
-  } else {
-    alert("Preencha email e senha");
-  }
-}
-
-function mostrarApp() {
-  document.getElementById("login-area").style.display = "none";
-  document.getElementById("app-area").style.display = "block";
-  atualizarSaldo();
-}
-
-function logout() {
-  localStorage.removeItem("user");
-  location.reload();
-}
-
-function adicionar() {
-  const valor = parseFloat(document.getElementById("valor").value);
-  let saldo = parseFloat(localStorage.getItem("saldo") || 0);
-  saldo += valor;
-  localStorage.setItem("saldo", saldo);
-  atualizarSaldo();
-}
-
-function atualizarSaldo() {
-  document.getElementById("saldo").innerText = 
-    parseFloat(localStorage.getItem("saldo") || 0).toFixed(2);
-}
-
-if (localStorage.getItem("user")) {
-  mostrarApp();
-}
-</script>
+  <div id="user" style="display:none;">
+    <p id="welcome"></p>
+    <button id="logout">Sair</button>
+  </div>
 
 </body>
 </html>
