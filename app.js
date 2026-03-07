@@ -1,45 +1,96 @@
-import { auth } from './firebase.js';
-import { 
-  signInWithEmailAndPassword, 
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-const email = document.getElementById('email');
-const password = document.getElementById('password');
-const loginBtn = document.getElementById('login');
-const registerBtn = document.getElementById('register');
-const logoutBtn = document.getElementById('logout');
-const authDiv = document.getElementById('auth');
-const userDiv = document.getElementById('user');
-const welcome = document.getElementById('welcome');
-
-loginBtn.onclick = () => {
-  signInWithEmailAndPassword(auth, email.value, password.value)
-    .catch(err => alert(err.message));
+const firebaseConfig = {
+  apiKey: "COLOQUE_SUA_API_KEY",
+  authDomain: "SEU_PROJETO.firebaseapp.com",
+  projectId: "SEU_PROJETO"
 };
 
-registerBtn.onclick = () => {
-  createUserWithEmailAndPassword(auth, email.value, password.value)
-    .catch(err => alert(err.message));
-};
+firebase.initializeApp(firebaseConfig);
 
-logoutBtn.onclick = () => signOut(auth);
+const auth = firebase.auth();
+const db = firebase.firestore();
 
-onAuthStateChanged(auth, user => {
-  if (user) {
-    authDiv.style.display = "none";
-    userDiv.style.display = "block";
-    welcome.textContent = "Bem-vindo, " + user.email;
-  } else {
-    authDiv.style.display = "block";
-    userDiv.style.display = "none";
-  }
+function login(){
+const email = document.getElementById("email").value;
+const senha = document.getElementById("senha").value;
+auth.signInWithEmailAndPassword(email,senha);
+}
+
+function cadastrar(){
+const email = document.getElementById("email").value;
+const senha = document.getElementById("senha").value;
+auth.createUserWithEmailAndPassword(email,senha);
+}
+
+function logout(){
+auth.signOut();
+}
+
+auth.onAuthStateChanged(user=>{
+
+if(user){
+
+document.getElementById("login").style.display="none";
+document.getElementById("app").style.display="block";
+
+document.getElementById("usuario").innerText="Bem-vindo, "+user.email;
+
+carregar();
+
+}else{
+
+document.getElementById("login").style.display="block";
+document.getElementById("app").style.display="none";
+
+}
+
 });
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js');
-  });
+function salvar(){
+
+const descricao = document.getElementById("descricao").value;
+const valor = parseFloat(document.getElementById("valor").value);
+const tipo = document.getElementById("tipo").value;
+
+db.collection("movimentos").add({
+descricao,
+valor,
+tipo,
+data:new Date()
+});
+
+}
+
+function carregar(){
+
+let saldo=0;
+
+db.collection("movimentos").orderBy("data","desc").onSnapshot(snapshot=>{
+
+const lista = document.getElementById("lista");
+lista.innerHTML="";
+
+saldo=0;
+
+snapshot.forEach(doc=>{
+
+const item = doc.data();
+const li = document.createElement("li");
+
+li.innerText = item.descricao+" - R$ "+item.valor;
+
+lista.appendChild(li);
+
+if(item.tipo=="receita"){
+saldo += item.valor;
+}else{
+saldo -= item.valor;
+}
+
+});
+
+document.getElementById("saldo").innerText = saldo;
+
+});
+
 }
