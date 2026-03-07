@@ -1,10 +1,4 @@
 
-const firebaseConfig = {
-  apiKey: "COLOQUE_SUA_API_KEY",
-  authDomain: "SEU_PROJETO.firebaseapp.com",
-  projectId: "SEU_PROJETO"
-};
-
 firebase.initializeApp(firebaseConfig);
 
 const auth = firebase.auth();
@@ -33,7 +27,7 @@ if(user){
 document.getElementById("login").style.display="none";
 document.getElementById("app").style.display="block";
 
-document.getElementById("usuario").innerText="Bem-vindo, "+user.email;
+document.getElementById("usuario").innerText=user.email;
 
 carregar();
 
@@ -65,31 +59,34 @@ function carregar(){
 
 let saldo=0;
 
-db.collection("movimentos").orderBy("data","desc").onSnapshot(snapshot=>{
+db.collection("movimentos").orderBy("data","desc")
+.onSnapshot(snapshot=>{
 
 const lista = document.getElementById("lista");
 lista.innerHTML="";
-
 saldo=0;
 
 snapshot.forEach(doc=>{
 
 const item = doc.data();
+
 const li = document.createElement("li");
 
-li.innerText = item.descricao+" - R$ "+item.valor;
+const valorFormatado = "R$ "+item.valor;
+
+li.innerHTML = `<span>${item.descricao}</span><strong>${valorFormatado}</strong>`;
 
 lista.appendChild(li);
 
 if(item.tipo=="receita"){
-saldo += item.valor;
+saldo+=item.valor;
 }else{
-saldo -= item.valor;
+saldo-=item.valor;
 }
 
 });
 
-document.getElementById("saldo").innerText = saldo;
+document.getElementById("saldo").innerText="R$ "+saldo;
 
 });
 

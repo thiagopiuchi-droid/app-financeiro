@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -16,21 +17,28 @@
 <body>
 
 <div id="login">
-<h1>App Financeiro</h1>
+<h1>💰 App Financeiro</h1>
 
 <input id="email" placeholder="Email">
 <input id="senha" type="password" placeholder="Senha">
 
 <button onclick="login()">Entrar</button>
-<button onclick="cadastrar()">Cadastrar</button>
+<button onclick="cadastrar()">Criar conta</button>
 </div>
 
 <div id="app" style="display:none">
 
+<div class="topo">
 <h2 id="usuario"></h2>
+<button onclick="logout()">Sair</button>
+</div>
 
-<h3>Saldo: R$ <span id="saldo">0</span></h3>
+<div class="saldo-box">
+<h3>Saldo Atual</h3>
+<h1 id="saldo">R$ 0</h1>
+</div>
 
+<div class="form">
 <input id="descricao" placeholder="Descrição">
 <input id="valor" placeholder="Valor">
 
@@ -39,14 +47,17 @@
 <option value="despesa">Despesa</option>
 </select>
 
-<button onclick="salvar()">Salvar</button>
+<button onclick="salvar()">Adicionar</button>
+</div>
 
 <h3>Histórico</h3>
 <ul id="lista"></ul>
 
-<button onclick="logout()">Sair</button>
-
 </div>
+
+<script>
+const firebaseConfig = {"apiKey": "AIzaSyAji6ROLmn3BkD92gZnQOMjRDgMX1hFd74", "authDomain": "app-financeiro-7043f.firebaseapp.com", "projectId": "app-financeiro-7043f", "storageBucket": "app-financeiro-7043f.firebasestorage.app", "messagingSenderId": "877961043361"};
+</script>
 
 <script src="app.js"></script>
 
