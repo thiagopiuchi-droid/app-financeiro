@@ -1,0 +1,1 @@
+export function exportData(){ alert('Export em desenvolvimento'); }
