@@ -1,93 +1,90 @@
 
-firebase.initializeApp(firebaseConfig);
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 
-const auth = firebase.auth();
-const db = firebase.firestore();
+import {
+getFirestore,
+collection,
+addDoc,
+getDocs,
+deleteDoc,
+doc
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-function login(){
-const email = document.getElementById("email").value;
-const senha = document.getElementById("senha").value;
-auth.signInWithEmailAndPassword(email,senha);
-}
+const firebaseConfig = {
+apiKey: "AIzaSyAji6ROLmn3BkD92gZnQOMjRDgMX1hFd74",
+authDomain: "app-financeiro-7043f.firebaseapp.com",
+projectId: "app-financeiro-7043f",
+storageBucket: "app-financeiro-7043f.firebasestorage.app",
+messagingSenderId: "877961043361",
+appId: "1:877961043361:web:b76ac2a7089a33ab173fe0"
+};
 
-function cadastrar(){
-const email = document.getElementById("email").value;
-const senha = document.getElementById("senha").value;
-auth.createUserWithEmailAndPassword(email,senha);
-}
-
-function logout(){
-auth.signOut();
-}
-
-auth.onAuthStateChanged(user=>{
-
-if(user){
-
-document.getElementById("login").style.display="none";
-document.getElementById("app").style.display="block";
-
-document.getElementById("usuario").innerText=user.email;
-
-carregar();
-
-}else{
-
-document.getElementById("login").style.display="block";
-document.getElementById("app").style.display="none";
-
-}
-
-});
-
-function salvar(){
-
-const descricao = document.getElementById("descricao").value;
-const valor = parseFloat(document.getElementById("valor").value);
-const tipo = document.getElementById("tipo").value;
-
-db.collection("movimentos").add({
-descricao,
-valor,
-tipo,
-data:new Date()
-});
-
-}
-
-function carregar(){
-
-let saldo=0;
-
-db.collection("movimentos").orderBy("data","desc")
-.onSnapshot(snapshot=>{
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 const lista = document.getElementById("lista");
-lista.innerHTML="";
-saldo=0;
 
-snapshot.forEach(doc=>{
+async function carregar(){
 
-const item = doc.data();
+let receitas = 0;
+let despesas = 0;
+
+lista.innerHTML = "";
+
+const querySnapshot = await getDocs(collection(db,"transactions"));
+
+querySnapshot.forEach((docSnap)=>{
+
+const d = docSnap.data();
+const valor = Number(d.valor);
+
+if(d.tipo === "receita") receitas += valor;
+if(d.tipo === "despesa") despesas += valor;
 
 const li = document.createElement("li");
 
-const valorFormatado = "R$ "+item.valor;
-
-li.innerHTML = `<span>${item.descricao}</span><strong>${valorFormatado}</strong>`;
+li.innerHTML = `
+${d.categoria} - R$ ${valor}
+<button onclick="excluir('${docSnap.id}')">X</button>
+`;
 
 lista.appendChild(li);
 
-if(item.tipo=="receita"){
-saldo+=item.valor;
-}else{
-saldo-=item.valor;
-}
-
 });
 
-document.getElementById("saldo").innerText="R$ "+saldo;
-
-});
+document.getElementById("receitas").innerText = "R$ "+receitas;
+document.getElementById("despesas").innerText = "R$ "+despesas;
+document.getElementById("saldo").innerText = "R$ "+(receitas-despesas);
 
 }
+
+window.salvar = async function(){
+
+const valor = parseFloat(document.getElementById("valor").value);
+
+if(isNaN(valor)) return alert("Digite um valor válido");
+
+const tipo = document.getElementById("tipo").value;
+const categoria = document.getElementById("categoria").value;
+
+await addDoc(collection(db,"transactions"),{
+valor: valor,
+tipo: tipo,
+categoria: categoria,
+data: new Date()
+});
+
+document.getElementById("valor").value="";
+
+carregar();
+
+}
+
+window.excluir = async function(id){
+
+await deleteDoc(doc(db,"transactions",id));
+carregar();
+
+}
+
+carregar();
