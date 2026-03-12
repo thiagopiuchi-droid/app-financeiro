@@ -1,4 +1,4 @@
 
-self.addEventListener("install", e=>{
-console.log("service worker instalado");
+self.addEventListener("install",e=>{
+self.skipWaiting();
 });

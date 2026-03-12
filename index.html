@@ -4,43 +4,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>App Financeiro</title>
-
-<link rel="stylesheet" href="style.css">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script type="module" src="app.js"></script>
+<title>Financeiro PRO</title>
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
 
-<h1>Dashboard</h1>
+<h1>💰 Financeiro PRO</h1>
 
-<div class="cards">
-<div class="card"><h3>Saldo</h3><p id="saldo">R$ 0</p></div>
-<div class="card"><h3>Receitas</h3><p id="receitas">R$ 0</p></div>
-<div class="card"><h3>Despesas</h3><p id="despesas">R$ 0</p></div>
+<div class="nav">
+<a href="login.html">Login</a>
+<a href="cadastro.html">Cadastro</a>
 </div>
 
-<h2>Nova transação</h2>
-
-<input id="valor" type="number" placeholder="Valor">
-
-<select id="tipo">
-<option value="receita">Receita</option>
-<option value="despesa">Despesa</option>
-</select>
-
-<select id="categoria">
-<option>Alimentação</option>
-<option>Transporte</option>
-<option>Lazer</option>
-<option>Moradia</option>
-</select>
-
-<button onclick="salvar()">Salvar</button>
-
-<h2>Histórico</h2>
-<ul id="lista"></ul>
+<script>
+if ('serviceWorker' in navigator) {
+ navigator.serviceWorker.register('service-worker.js');
+}
+</script>
 
 </body>
 </html>

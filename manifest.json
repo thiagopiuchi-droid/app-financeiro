@@ -1,9 +1,8 @@
-
 {
-"name":"App Financeiro",
-"short_name":"Financeiro",
-"start_url":"/",
-"display":"standalone",
-"background_color":"#ffffff",
-"theme_color":"#000000"
+  "name": "Financeiro PRO",
+  "short_name": "Financeiro",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff"
 }
