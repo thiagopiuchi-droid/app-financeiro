@@ -1,0 +1,42 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>App Financeiro</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<h1>Login</h1>
+
+<input type="email" id="email" placeholder="Email">
+<input type="password" id="password" placeholder="Senha">
+
+<button onclick="login()">Entrar</button>
+<button onclick="register()">Cadastrar</button>
+
+<script type="module" src="js/firebase.js"></script>
+
+<script type="module">
+import { auth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from './js/firebase.js';
+
+window.login = async function(){
+ const email = document.getElementById('email').value;
+ const password = document.getElementById('password').value;
+ await signInWithEmailAndPassword(auth,email,password);
+ window.location.href="dashboard.html";
+}
+
+window.register = async function(){
+ const email = document.getElementById('email').value;
+ const password = document.getElementById('password').value;
+ await createUserWithEmailAndPassword(auth,email,password);
+ alert("Conta criada!");
+}
+</script>
+
+</body>
+</html>
