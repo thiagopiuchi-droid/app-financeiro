@@ -1,0 +1,33 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<link rel="stylesheet" href="css/style.css">
+<title>Dashboard</title>
+</head>
+
+<body>
+
+<h2>Dashboard Financeiro</h2>
+
+<input id="valor" placeholder="Valor">
+<input id="descricao" placeholder="Descrição">
+
+<button onclick="salvar()">Salvar</button>
+
+<h3>Total</h3>
+<p id="total">0</p>
+
+<h3>Registros</h3>
+<ul id="lista"></ul>
+
+<button onclick="zerar()">Zerar Tudo</button>
+<button onclick="logout()">Sair</button>
+
+<script type="module" src="js/firebase.js"></script>
+<script type="module" src="js/transactions.js"></script>
+
+</body>
+</html>

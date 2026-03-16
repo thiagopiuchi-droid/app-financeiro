@@ -1,0 +1,8 @@
+{
+  "name": "App Financeiro",
+  "short_name": "Financeiro",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "description": "Controle financeiro PWA"
+}
