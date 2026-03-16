@@ -2,17 +2,18 @@
 body{
 font-family:Arial;
 padding:30px;
-background:#f5f5f5;
+background:#f4f6f8;
 }
 
-input{
+input,select{
 display:block;
 margin:10px 0;
 padding:10px;
-width:250px;
+width:260px;
 }
 
 button{
 padding:10px 20px;
 margin:5px;
+cursor:pointer;
 }
