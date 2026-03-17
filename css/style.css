@@ -1,19 +1,10 @@
-
-body{
-font-family:Arial;
-padding:30px;
-background:#f4f6f8;
+body {
+  font-family: Arial;
+  padding: 20px;
 }
 
-input,select{
-display:block;
-margin:10px 0;
-padding:10px;
-width:260px;
-}
-
-button{
-padding:10px 20px;
-margin:5px;
-cursor:pointer;
+input, select, button {
+  display: block;
+  margin: 10px 0;
+  padding: 10px;
 }
