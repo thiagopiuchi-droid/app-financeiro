@@ -1,78 +1,78 @@
-// ===== CONFIG =====
 const saldoEl = document.getElementById("saldo");
 const listaEl = document.getElementById("lista");
 
 let movimentos = JSON.parse(localStorage.getItem("movimentos")) || [];
 
-function salvarMovimento() {
-  const descricao = document.getElementById("descricao").value;
-  const valorInput = document.getElementById("valor").value;
-  const tipo = document.getElementById("tipo").value;
+function salvarMovimento(){
+const descricao = document.getElementById("descricao").value;
+const valorInput = document.getElementById("valor").value;
+const tipo = document.getElementById("tipo").value;
 
-  const valor = parseFloat(valorInput.replace(",", "."));
+const valor = parseFloat(valorInput.replace(",", "."));
 
-  if (!descricao || isNaN(valor)) {
-    alert("Preencha corretamente!");
-    return;
-  }
-
-  movimentos.push({ descricao, valor, tipo });
-  localStorage.setItem("movimentos", JSON.stringify(movimentos));
-
-  atualizarTela();
+if(!descricao || isNaN(valor)){
+alert("Preencha corretamente!");
+return;
 }
 
-function atualizarTela() {
-  listaEl.innerHTML = "";
+movimentos.push({descricao, valor, tipo});
+localStorage.setItem("movimentos", JSON.stringify(movimentos));
 
-  let saldo = 0;
-  let receitas = 0;
-  let despesas = 0;
+atualizarTela();
+}
 
-  movimentos.forEach((item) => {
-    const valor = parseFloat(item.valor) || 0;
+function atualizarTela(){
+listaEl.innerHTML = "";
 
-    const li = document.createElement("li");
-    li.textContent = `${item.descricao} - R$ ${valor.toFixed(2)} (${item.tipo})`;
-    listaEl.appendChild(li);
+let saldo = 0;
+let receitas = 0;
+let despesas = 0;
 
-    if (item.tipo === "receita") {
-      saldo += valor;
-      receitas += valor;
-    } else {
-      saldo -= valor;
-      despesas += valor;
-    }
-  });
+movimentos.forEach(item=>{
+const valor = parseFloat(item.valor) || 0;
 
-  saldoEl.innerText = `R$ ${(saldo || 0).toFixed(2)}`;
-  atualizarGrafico(receitas, despesas);
+const li = document.createElement("li");
+li.textContent = `${item.descricao} - R$ ${valor.toFixed(2)} (${item.tipo})`;
+listaEl.appendChild(li);
+
+if(item.tipo === "receita"){
+saldo += valor;
+receitas += valor;
+}else{
+saldo -= valor;
+despesas += valor;
+}
+});
+
+saldoEl.innerText = `R$ ${(saldo || 0).toFixed(2)}`;
+atualizarGrafico(receitas, despesas);
 }
 
 let chart;
 
-function atualizarGrafico(receitas, despesas) {
-  const ctx = document.getElementById("grafico").getContext("2d");
+function atualizarGrafico(receitas, despesas){
+const ctx = document.getElementById("grafico").getContext("2d");
 
-  if (chart) chart.destroy();
+if(chart) chart.destroy();
 
-  chart = new Chart(ctx, {
-    type: "doughnut",
-    data: {
-      labels: ["Receitas", "Despesas"],
-      datasets: [{
-        data: [receitas || 0, despesas || 0]
-      }]
-    }
-  });
+chart = new Chart(ctx,{
+type:"doughnut",
+data:{
+labels:["Receitas","Despesas"],
+datasets:[{
+data:[receitas || 0, despesas || 0],
+backgroundColor:["#3498db","#ff4d6d"]
+}]
+}
+});
 }
 
-function zerarDados() {
-  if (confirm("Apagar tudo?")) {
-    localStorage.removeItem("movimentos");
-    movimentos = [];
-    atualizarTela();
-  }
+function zerarDados(){
+if(confirm("Apagar tudo?")){
+localStorage.removeItem("movimentos");
+movimentos = [];
+atualizarTela();
+}
 }
 
 atualizarTela();
