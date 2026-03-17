@@ -1,54 +1,78 @@
+// ===== CONFIG =====
+const saldoEl = document.getElementById("saldo");
+const listaEl = document.getElementById("lista");
 
-import { db } from './firebase.js';
-import { collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+let movimentos = JSON.parse(localStorage.getItem("movimentos")) || [];
 
-const salvarBtn = document.getElementById("salvarBtn");
-const lista = document.getElementById("lista");
-const resetBtn = document.getElementById("resetDataBtn");
+function salvarMovimento() {
+  const descricao = document.getElementById("descricao").value;
+  const valorInput = document.getElementById("valor").value;
+  const tipo = document.getElementById("tipo").value;
 
-async function carregar(){
+  const valor = parseFloat(valorInput.replace(",", "."));
 
-lista.innerHTML="";
+  if (!descricao || isNaN(valor)) {
+    alert("Preencha corretamente!");
+    return;
+  }
 
-const snapshot = await getDocs(collection(db,"transacoes"));
+  movimentos.push({ descricao, valor, tipo });
+  localStorage.setItem("movimentos", JSON.stringify(movimentos));
 
-snapshot.forEach((docItem)=>{
-
-const li=document.createElement("li");
-li.innerText=docItem.data().valor;
-lista.appendChild(li);
-
-});
-
+  atualizarTela();
 }
 
-salvarBtn.addEventListener("click", async ()=>{
+function atualizarTela() {
+  listaEl.innerHTML = "";
 
-const valor=document.getElementById("valor").value;
+  let saldo = 0;
+  let receitas = 0;
+  let despesas = 0;
 
-await addDoc(collection(db,"transacoes"),{
-valor:valor
-});
+  movimentos.forEach((item) => {
+    const valor = parseFloat(item.valor) || 0;
 
-carregar();
+    const li = document.createElement("li");
+    li.textContent = `${item.descricao} - R$ ${valor.toFixed(2)} (${item.tipo})`;
+    listaEl.appendChild(li);
 
-});
+    if (item.tipo === "receita") {
+      saldo += valor;
+      receitas += valor;
+    } else {
+      saldo -= valor;
+      despesas += valor;
+    }
+  });
 
-resetBtn.addEventListener("click", async ()=>{
-
-const confirmar=confirm("Deseja apagar todos os dados?");
-
-if(!confirmar) return;
-
-const snapshot = await getDocs(collection(db,"transacoes"));
-
-for(const item of snapshot.docs){
-await deleteDoc(doc(db,"transacoes",item.id));
+  saldoEl.innerText = `R$ ${(saldo || 0).toFixed(2)}`;
+  atualizarGrafico(receitas, despesas);
 }
 
-alert("Dados apagados!");
-carregar();
+let chart;
 
-});
+function atualizarGrafico(receitas, despesas) {
+  const ctx = document.getElementById("grafico").getContext("2d");
 
-carregar();
+  if (chart) chart.destroy();
+
+  chart = new Chart(ctx, {
+    type: "doughnut",
+    data: {
+      labels: ["Receitas", "Despesas"],
+      datasets: [{
+        data: [receitas || 0, despesas || 0]
+      }]
+    }
+  });
+}
+
+function zerarDados() {
+  if (confirm("Apagar tudo?")) {
+    localStorage.removeItem("movimentos");
+    movimentos = [];
+    atualizarTela();
+  }
+}
+
+atualizarTela();
