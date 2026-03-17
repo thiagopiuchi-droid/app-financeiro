@@ -1,10 +1,8 @@
-body {
-  font-family: Arial;
-  padding: 20px;
+body{
+font-family: Arial;
+padding:20px;
 }
-
-input, select, button {
-  display: block;
-  margin: 10px 0;
-  padding: 10px;
+input,select,button{
+margin:5px;
+padding:10px;
 }
