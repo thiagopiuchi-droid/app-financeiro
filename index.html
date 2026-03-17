@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>App Financeiro V12 PRO</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>App Financeiro</title>
+
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
@@ -15,8 +16,8 @@
 <input id="descricao" placeholder="Descrição">
 <input id="valor" placeholder="Valor">
 <select id="tipo">
-  <option value="receita">Receita</option>
-  <option value="despesa">Despesa</option>
+<option value="receita">Receita</option>
+<option value="despesa">Despesa</option>
 </select>
 
 <button onclick="salvarMovimento()">Salvar</button>
@@ -28,6 +29,6 @@
 <h2>Gráfico</h2>
 <canvas id="grafico"></canvas>
 
-<script src="dashboard.js"></script>
+<script src="js/dashboard.js"></script>
 </body>
 </html>
