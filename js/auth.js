@@ -1,39 +1,40 @@
+function register(){
+const email = document.getElementById("email").value;
+const senha = document.getElementById("senha").value;
 
-import { auth } from "./firebase.js";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut }
-from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-
-window.login=async()=>{
-
-const email=document.getElementById("email").value;
-const senha=document.getElementById("senha").value;
-
-try{
-await signInWithEmailAndPassword(auth,email,senha);
-window.location.href="dashboard.html";
-}catch(e){
-document.getElementById("status").innerText=e.message;
+if(!email || !senha){
+alert("Preencha tudo");
+return;
 }
 
+localStorage.setItem(email, senha);
+alert("Cadastrado com sucesso!");
+window.location.href = "index.html";
 }
 
-window.goRegister=()=>{
-window.location.href="register.html";
+function login(){
+const email = document.getElementById("email").value;
+const senha = document.getElementById("senha").value;
+
+const senhaSalva = localStorage.getItem(email);
+
+if(senhaSalva === senha){
+localStorage.setItem("usuario", email);
+window.location.href = "dashboard.html";
+}else{
+alert("Login inválido");
+}
 }
 
-window.register=async()=>{
-
-const email=document.getElementById("email").value;
-const senha=document.getElementById("senha").value;
-
-await createUserWithEmailAndPassword(auth,email,senha);
-window.location.href="dashboard.html";
-
+function logout(){
+localStorage.removeItem("usuario");
+window.location.href = "index.html";
 }
 
-window.logout=async()=>{
-
-await signOut(auth);
-window.location.href="index.html";
-
+// proteção
+if(window.location.pathname.includes("dashboard.html")){
+const user = localStorage.getItem("usuario");
+if(!user){
+window.location.href = "index.html";
+}
 }
