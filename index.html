@@ -3,32 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>App Financeiro</title>
-
+<title>Login</title>
 <link rel="stylesheet" href="css/style.css">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
-<h1>Dashboard</h1>
-<h2>Saldo: <span id="saldo">R$ 0.00</span></h2>
+<h1>Login</h1>
 
-<input id="descricao" placeholder="Descrição">
-<input id="valor" placeholder="Valor">
-<select id="tipo">
-<option value="receita">Receita</option>
-<option value="despesa">Despesa</option>
-</select>
+<input id="email" placeholder="Email">
+<input id="senha" type="password" placeholder="Senha">
 
-<button onclick="salvarMovimento()">Salvar</button>
-<button onclick="zerarDados()">Zerar Tudo</button>
+<button onclick="login()">Entrar</button>
 
-<h2>Movimentos</h2>
-<ul id="lista"></ul>
+<p>Não tem conta? <a href="register.html">Cadastrar</a></p>
 
-<h2>Gráfico</h2>
-<canvas id="grafico"></canvas>
-
-<script src="js/dashboard.js"></script>
+<script src="js/auth.js"></script>
 </body>
 </html>
