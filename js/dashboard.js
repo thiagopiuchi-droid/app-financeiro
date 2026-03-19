@@ -1,78 +1,40 @@
-const saldoEl = document.getElementById("saldo");
-const listaEl = document.getElementById("lista");
 
-let movimentos = JSON.parse(localStorage.getItem("movimentos")) || [];
-
-function salvarMovimento(){
-const descricao = document.getElementById("descricao").value;
-const valorInput = document.getElementById("valor").value;
-const tipo = document.getElementById("tipo").value;
-
-const valor = parseFloat(valorInput.replace(",", "."));
-
-if(!descricao || isNaN(valor)){
-alert("Preencha corretamente!");
-return;
-}
-
-movimentos.push({descricao, valor, tipo});
-localStorage.setItem("movimentos", JSON.stringify(movimentos));
-
-atualizarTela();
-}
-
-function atualizarTela(){
-listaEl.innerHTML = "";
-
-let saldo = 0;
-let receitas = 0;
-let despesas = 0;
-
-movimentos.forEach(item=>{
-const valor = parseFloat(item.valor) || 0;
-
-const li = document.createElement("li");
-li.textContent = `${item.descricao} - R$ ${valor.toFixed(2)} (${item.tipo})`;
-listaEl.appendChild(li);
-
-if(item.tipo === "receita"){
-saldo += valor;
-receitas += valor;
-}else{
-saldo -= valor;
-despesas += valor;
-}
+auth.onAuthStateChanged(user=>{
+  if(!user){
+    window.location.href = "index.html";
+  }
 });
 
-saldoEl.innerText = `R$ ${(saldo || 0).toFixed(2)}`;
-atualizarGrafico(receitas, despesas);
+function salvar(){
+  const desc = document.getElementById("desc").value;
+  const valor = document.getElementById("valor").value;
+  const tipo = document.getElementById("tipo").value;
+  const dataInput = document.getElementById("data").value;
+
+  const dataFinal = dataInput ? new Date(dataInput) : new Date();
+
+  db.collection("movimentos").add({
+    desc, valor, tipo,
+    data: dataFinal.toISOString()
+  }).then(()=> location.reload());
 }
 
-let chart;
+function carregar(){
+  const lista = document.getElementById("lista");
+  lista.innerHTML = "";
 
-function atualizarGrafico(receitas, despesas){
-const ctx = document.getElementById("grafico").getContext("2d");
+  db.collection("movimentos").get().then(snapshot=>{
+    snapshot.forEach(doc=>{
+      const item = doc.data();
+      const data = new Date(item.data).toLocaleDateString("pt-BR");
 
-if(chart) chart.destroy();
-
-chart = new Chart(ctx,{
-type:"doughnut",
-data:{
-labels:["Receitas","Despesas"],
-datasets:[{
-data:[receitas || 0, despesas || 0],
-backgroundColor:["#3498db","#ff4d6d"]
-}]
-}
-});
-}
-
-function zerarDados(){
-if(confirm("Apagar tudo?")){
-localStorage.removeItem("movimentos");
-movimentos = [];
-atualizarTela();
-}
+      lista.innerHTML += `
+        <li>
+          ${data} • ${item.desc} - R$ ${item.valor} (${item.tipo})
+        </li>
+      `;
+    });
+  });
 }
 
-atualizarTela();
+window.onload = carregar;
