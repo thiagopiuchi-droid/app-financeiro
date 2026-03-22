@@ -1,17 +1,30 @@
+
 body {
   font-family: Arial;
+  background: #f5f5f5;
   text-align: center;
-  margin-top: 50px;
+  padding: 20px;
 }
 
-input {
+.container {
+  max-width: 400px;
+  margin: auto;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+input, select {
+  width: 90%;
   padding: 10px;
   margin: 5px;
-  width: 200px;
 }
 
 button {
   padding: 10px;
   margin: 5px;
-  cursor: pointer;
+  width: 45%;
+}
+canvas {
+  margin-top: 20px;
 }
