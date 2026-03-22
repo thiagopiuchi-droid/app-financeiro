@@ -1,16 +1,14 @@
 
-function login() {
-  const email = emailInput.value;
-  const senha = senhaInput.value;
-  auth.signInWithEmailAndPassword(email, senha)
-    .then(()=> location.href="dashboard.html")
-    .catch(e=>alert(e.message));
+function login(){
+ auth.signInWithEmailAndPassword(email.value,senha.value)
+ .then(()=>location.href="dashboard.html")
+ .catch(e=>alert(e.message));
 }
 
-function register() {
-  auth.createUserWithEmailAndPassword(emailInput.value, senhaInput.value)
-    .then(()=>alert("Conta criada"))
-    .catch(e=>alert(e.message));
+function register(){
+ auth.createUserWithEmailAndPassword(email.value,senha.value)
+ .then(()=>alert("Conta criada"))
+ .catch(e=>alert(e.message));
 }
 
 function protegerPagina(){
