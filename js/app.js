@@ -1,64 +1,64 @@
-let userId = null;
 
-auth.onAuthStateChanged(user => {
-  if (user) {
-    userId = user.uid;
-    carregarDados();
-  }
+let userId;
+let chart;
+
+auth.onAuthStateChanged(user=>{
+ if(user){
+  userId = user.uid;
+  carregar();
+ }
 });
 
-function adicionar(tipo) {
-  const valor = parseFloat(document.getElementById("valor").value);
+function adicionar(tipo){
+ const valor = parseFloat(valorInput.value);
+ const desc = descInput.value;
+ const data = dataInput.value || new Date().toISOString();
 
-  if (!valor) return alert("Digite um valor!");
-
-  db.collection("usuarios")
-    .doc(userId)
-    .collection("transacoes")
-    .add({
-      tipo,
-      valor,
-      data: new Date()
-    })
-    .then(() => {
-      document.getElementById("valor").value = "";
-      carregarDados();
-    });
+ db.collection("usuarios").doc(userId).collection("transacoes")
+ .add({tipo, valor, desc, data})
+ .then(()=>{
+  valorInput.value="";
+  descInput.value="";
+  carregar();
+ });
 }
 
-function carregarDados() {
-  db.collection("usuarios")
-    .doc(userId)
-    .collection("transacoes")
-    .get()
-    .then(snapshot => {
-      let saldo = 0;
+function carregar(){
+ db.collection("usuarios").doc(userId).collection("transacoes")
+ .get().then(snap=>{
+  let receitas=0, despesas=0;
 
-      snapshot.forEach(doc => {
-        const t = doc.data();
-        saldo += t.tipo === "receita" ? t.valor : -t.valor;
-      });
+  snap.forEach(doc=>{
+   let d = doc.data();
+   if(d.tipo==="receita") receitas+=d.valor;
+   else despesas+=d.valor;
+  });
 
-      document.getElementById("saldo").innerText =
-        "R$ " + saldo.toFixed(2);
-    });
+  saldo.innerText = "R$ "+(receitas-despesas).toFixed(2);
+
+  renderChart(receitas, despesas);
+ });
 }
 
-function zerarDados() {
-  if (!confirm("Tem certeza?")) return;
+function renderChart(r,d){
+ const ctx = document.getElementById("grafico");
 
-  db.collection("usuarios")
-    .doc(userId)
-    .collection("transacoes")
-    .get()
-    .then(snapshot => {
-      const batch = db.batch();
+ if(chart) chart.destroy();
 
-      snapshot.forEach(doc => {
-        batch.delete(doc.ref);
-      });
+ chart = new Chart(ctx,{
+  type:'pie',
+  data:{
+   labels:['Receitas','Despesas'],
+   datasets:[{data:[r,d]}]
+  }
+ });
+}
 
-      return batch.commit();
-    })
-    .then(() => carregarDados());
+function zerar(){
+ db.collection("usuarios").doc(userId).collection("transacoes")
+ .get().then(snap=>{
+  let batch = db.batch();
+  snap.forEach(doc=> batch.delete(doc.ref));
+  return batch.commit();
+ }).then(carregar);
 }
