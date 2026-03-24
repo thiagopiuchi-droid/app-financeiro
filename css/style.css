@@ -1,9 +1,31 @@
-body{
-font-family: Arial;
-padding:20px;
+body {
+  font-family: Arial;
+  background: #0f172a;
+  color: white;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
 }
-input,select,button{
-display:block;
-margin:10px 0;
-padding:10px;
+
+.container {
+  width: 100%;
+  max-width: 400px;
+}
+
+input, select, button {
+  width: 100%;
+  margin: 5px 0;
+  padding: 10px;
+}
+
+button {
+  background: #22c55e;
+  border: none;
+  color: white;
+  font-weight: bold;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
 }
