@@ -1,22 +1,17 @@
+function register() {
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
 
-function login(){
- auth.signInWithEmailAndPassword(email.value,senha.value)
- .then(()=>location.href="dashboard.html")
- .catch(e=>alert(e.message));
+  auth.createUserWithEmailAndPassword(email, password)
+    .then(() => alert('Conta criada!'))
+    .catch(e => alert(e.message));
 }
 
-function register(){
- auth.createUserWithEmailAndPassword(email.value,senha.value)
- .then(()=>alert("Conta criada"))
- .catch(e=>alert(e.message));
-}
+function login() {
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
 
-function protegerPagina(){
- auth.onAuthStateChanged(u=>{
-  if(!u) location.href="index.html";
- });
-}
-
-function logout(){
- auth.signOut().then(()=>location.href="index.html");
+  auth.signInWithEmailAndPassword(email, password)
+    .then(() => window.location.href = "dashboard.html")
+    .catch(e => alert(e.message));
 }

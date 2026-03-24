@@ -1,56 +1,64 @@
+let balance = 0;
 
-let userId;
-
-auth.onAuthStateChanged(u=>{
- if(u){
-  userId=u.uid;
-  carregar();
- }
+auth.onAuthStateChanged(user => {
+  if (!user) {
+    window.location.href = "index.html";
+  } else {
+    loadData(user.uid);
+  }
 });
 
-function adicionar(tipo){
- const valor=parseFloat(valor.value);
- const desc=descricao.value;
- const data=dataInput.value||new Date().toISOString();
+function addTransaction() {
+  const desc = document.getElementById('desc').value;
+  const value = Number(document.getElementById('value').value);
+  const type = document.getElementById('type').value;
 
- db.collection("usuarios").doc(userId).collection("transacoes")
- .add({tipo,valor,desc,data})
- .then(()=>{
-  valor.value="";
-  descricao.value="";
-  carregar();
- });
+  const user = auth.currentUser;
+
+  db.collection("transactions").add({
+    uid: user.uid,
+    desc,
+    value,
+    type,
+    date: new Date()
+  }).then(() => location.reload());
 }
 
-function carregar(){
- db.collection("usuarios").doc(userId).collection("transacoes")
- .orderBy("data","desc")
- .get().then(snap=>{
-  let receitas=0,despesas=0;
-  lista.innerHTML="";
+function loadData(uid) {
+  const list = document.getElementById('list');
+  list.innerHTML = "";
+  balance = 0;
 
-  snap.forEach(doc=>{
-   let d=doc.data();
+  db.collection("transactions").where("uid", "==", uid).get()
+    .then(snapshot => {
+      snapshot.forEach(doc => {
+        const data = doc.data();
 
-   if(d.tipo==="receita") receitas+=d.valor;
-   else despesas+=d.valor;
+        if (data.type === "receita") balance += data.value;
+        else balance -= data.value;
 
-   lista.innerHTML+=`
-    <div class="item">
-     <span>${d.desc||"-"} (${new Date(d.data).toLocaleDateString()})</span>
-     <span>R$ ${d.valor}</span>
-    </div>`;
-  });
+        const li = document.createElement("li");
+        li.innerHTML = `${data.desc} - R$ ${data.value} 
+        <button onclick="deleteItem('${doc.id}')">X</button>`;
+        list.appendChild(li);
+      });
 
-  saldo.innerText="R$ "+(receitas-despesas).toFixed(2);
- });
+      document.getElementById('balance').innerText = balance;
+    });
 }
 
-function zerar(){
- db.collection("usuarios").doc(userId).collection("transacoes")
- .get().then(snap=>{
-  let batch=db.batch();
-  snap.forEach(doc=>batch.delete(doc.ref));
-  return batch.commit();
- }).then(carregar);
+function deleteItem(id) {
+  db.collection("transactions").doc(id).delete()
+    .then(() => location.reload());
+}
+
+function resetAll() {
+  const user = auth.currentUser;
+
+  db.collection("transactions").where("uid", "==", user.uid).get()
+    .then(snapshot => {
+      snapshot.forEach(doc => {
+        doc.ref.delete();
+      });
+    }).then(() => location.reload());
 }
