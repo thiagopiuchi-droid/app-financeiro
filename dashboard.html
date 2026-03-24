@@ -12,6 +12,7 @@
 
 <input id="desc" placeholder="Descrição">
 <input id="value" type="number" placeholder="Valor">
+<input id="date" type="date">
 
 <select id="type">
 <option value="receita">Receita</option>
@@ -22,9 +23,13 @@
 <button onclick="resetAll()">Zerar Tudo</button>
 
 <h3>Saldo: R$ <span id="balance">0</span></h3>
+
+<canvas id="chart"></canvas>
+
 <ul id="list"></ul>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
