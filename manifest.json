@@ -1,1 +1,6 @@
-{}
+{
+"name":"Finance App",
+"short_name":"Finance",
+"start_url":"index.html",
+"display":"standalone"
+}
