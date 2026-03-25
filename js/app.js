@@ -15,39 +15,43 @@ salvar();atualizar();
 
 function remover(i){dados.splice(i,1);salvar();atualizar();}
 
+function limparTudo(){
+if(confirm('Apagar tudo?')){
+dados=[];salvar();atualizar();
+}
+}
+
 function atualizar(){
 let lista=document.getElementById('lista');lista.innerHTML='';
-let saldo=0;
+let saldo=0, receitas=0, despesas=0;
+
 dados.forEach((d,i)=>{
 saldo+=d.tipo==='receita'?d.valor:-d.valor;
+if(d.tipo==='receita') receitas+=d.valor;
+else despesas+=d.valor;
+
 let li=document.createElement('li');
 li.innerHTML=`${d.desc} - R$ ${format(d.valor)}<br>📅 ${new Date(d.data).toLocaleDateString('pt-BR')} | ${d.categoria}
 <button onclick="remover(${i})">🗑️</button>`;
 lista.appendChild(li);
 });
+
 document.getElementById('saldo').innerText='Saldo: R$ '+format(saldo);
-preencherFiltro();
+
+desenharGrafico(receitas, despesas);
 }
 
-function preencherFiltro(){
-let select=document.getElementById('filtroMes');
-let meses=[...new Set(dados.map(d=>d.data.slice(0,7)))];
-select.innerHTML='<option value="">Todos</option>';
-meses.forEach(m=>{
-let o=document.createElement('option');
-o.value=m;o.text=m;select.appendChild(o);
-});
-}
+function desenharGrafico(r,d){
+let c=document.getElementById('grafico');
+let ctx=c.getContext('2d');
+ctx.clearRect(0,0,c.width,c.height);
 
-function filtrar(){
-let mes=document.getElementById('filtroMes').value;
-if(!mes)return atualizar();
-let lista=document.getElementById('lista');lista.innerHTML='';
-dados.filter(d=>d.data.startsWith(mes)).forEach(d=>{
-let li=document.createElement('li');
-li.innerHTML=`${d.desc} - R$ ${format(d.valor)}<br>📅 ${new Date(d.data).toLocaleDateString('pt-BR')} | ${d.categoria}`;
-lista.appendChild(li);
-});
+let total=r+d||1;
+let pr=r/total;
+let pd=d/total;
+
+ctx.fillRect(0,0,c.width*pr,c.height);
+ctx.fillRect(c.width*pr,0,c.width*pd,c.height);
 }
 
 function toggleDark(){document.body.classList.toggle('dark');}
