@@ -14,6 +14,7 @@
 <select id="categoria">
 <option>Alimentação</option>
 <option>Transporte</option>
+<option>Gasolina</option>
 <option>Lazer</option>
 <option>Salário</option>
 </select>
@@ -22,10 +23,11 @@
 
 <button onclick="add('receita')">Receita</button>
 <button onclick="add('despesa')">Despesa</button>
+<button onclick="limparTudo()">🧹 Limpar tudo</button>
 
 <h3 id="saldo">Saldo: R$ 0.00</h3>
 
-<select id="filtroMes" onchange="filtrar()"></select>
+<canvas id="grafico" height="100"></canvas>
 
 <ul id="lista"></ul>
 
