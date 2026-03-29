@@ -1,0 +1,45 @@
+body {
+  font-family: Arial;
+  background: #0d0d0d;
+  color: white;
+  margin: 0;
+  padding: 20px;
+}
+
+.hidden { display: none; }
+
+.card {
+  max-width: 300px;
+  margin: auto;
+  margin-top: 40%;
+  background: #1a1a1a;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: none;
+}
+
+button {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+}
+
+.green { background: #00c853; }
+.red { background: #ff1744; }
+
+#historico div {
+  background: #1a1a1a;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+}

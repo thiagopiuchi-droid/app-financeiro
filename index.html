@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Financeiro</title>
+<link rel="stylesheet" href="style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<div id="login">
+  <div class="card">
+    <h2>Login</h2>
+    <input placeholder="Email">
+    <input type="password" placeholder="Senha">
+    <button onclick="entrar()">Entrar</button>
+  </div>
+</div>
+
+<div id="app" class="hidden">
+  <h1>💰 Financeiro</h1>
+
+  <input id="desc" placeholder="Descrição">
+  <input id="valor" placeholder="Valor" type="number">
+
+  <select id="categoria">
+    <option>Alimentação</option>
+    <option>Transporte</option>
+    <option>Salário</option>
+    <option>Outros</option>
+  </select>
+
+  <input type="date" id="data">
+
+  <div class="buttons">
+    <button onclick="add('receita')" class="green">Receita</button>
+    <button onclick="add('despesa')" class="red">Despesa</button>
+    <button onclick="limpar()">🧹 Limpar</button>
+  </div>
+
+  <h2 id="saldo">Saldo: R$ 0</h2>
+  <canvas id="grafico"></canvas>
+  <div id="historico"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
