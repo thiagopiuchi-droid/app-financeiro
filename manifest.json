@@ -1,0 +1,15 @@
+{
+"name":"Financeiro PRO",
+"short_name":"Financeiro",
+"display":"standalone",
+"start_url":"/",
+"background_color":"#000",
+"theme_color":"#000",
+"icons":[
+{
+"src":"assets/icon.png",
+"sizes":"512x512",
+"type":"image/png"
+}
+]
+}
