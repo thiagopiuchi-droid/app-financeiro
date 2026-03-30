@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Financeiro</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="menu" onclick="toggleMenu()">☰</div>
+
+<div id="menuBox" class="menu-box hidden">
+  <button onclick="logout()">Logout</button>
+</div>
+
+<h1>💰 Financeiro</h1>
+
+<input id="descricao" placeholder="Descrição (Ex: Uber, Gasolina)">
+<input id="valor" placeholder="Valor" type="number">
+<select id="categoria">
+  <option>Salário</option>
+  <option>Gasolina</option>
+  <option>Alimentação</option>
+</select>
+<input id="data" type="date">
+
+<div class="buttons">
+  <button class="receita" onclick="salvarTransacao('receita')">Receita</button>
+  <button class="despesa" onclick="salvarTransacao('despesa')">Despesa</button>
+  <button onclick="limpar()">🧹 Limpar</button>
+</div>
+
+<h2 id="saldo">Saldo: R$ 0</h2>
+
+<canvas id="grafico"></canvas>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="firebase.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
