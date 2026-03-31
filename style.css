@@ -1,0 +1,4 @@
+body{background:#111;color:#fff;font-family:Arial;text-align:center}
+input,button{padding:10px;margin:5px}
+#menuBtn{position:fixed;top:10px;left:10px;font-size:25px;cursor:pointer}
+#menu{display:none;position:fixed;top:50px;left:10px;background:#222;padding:10px}
