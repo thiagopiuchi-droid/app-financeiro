@@ -1,9 +1,0 @@
-body{
-background:#111;color:#fff;font-family:Arial;
-display:flex;justify-content:center;align-items:center;height:100vh;
-}
-.container{width:90%;max-width:420px;text-align:center}
-input,button,select{padding:12px;margin:6px;font-size:16px}
-h1{font-size:28px} h2{font-size:22px}
-#menuBtn{position:fixed;top:10px;left:10px;font-size:25px}
-#menu{display:none;position:fixed;top:50px;left:10px;background:#222;padding:10px}
