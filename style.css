@@ -1,0 +1,6 @@
+body{background:#000;color:#fff;text-align:center;font-family:Arial}
+input,button{width:90%;margin:5px;padding:10px}
+#menuBtn{position:absolute;left:10px;top:10px;font-size:24px}
+#menu{position:absolute;left:10px;top:50px;background:#222;padding:10px}
+.hidden{display:none}
+#saldo{font-size:30px;font-weight:bold}
